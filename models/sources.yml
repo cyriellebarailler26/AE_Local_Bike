@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: local_bike
+    schema: local_bike
+    description: "Données brutes issues du dataset BigQuery de Local Bike"
+    tables:
+      - name: customers
+        description: "Informations des clients : coordonnées et identifiants uniques."
+      - name: orders
+        description: "Commandes passées par les clients, avec dates et statut."
+      - name: order_items
+        description: "Détails des articles inclus dans chaque commande."
+      - name: staffs
+        description: "Employés et vendeurs travaillant dans les magasins Local Bike."
+      - name: stores
+        description: "Points de vente physiques de Local Bike."
+      - name: products
+        description: "Produits vendus, avec leur marque, catégorie et prix."
+      - name: categories
+        description: "Catégories de produits (ex : vélos de route, VTT, accessoires...)."
+      - name: brands
+        description: "Marques partenaires de Local Bike."
+      - name: stocks
+        description: "Niveaux de stock par produit et par magasin."
