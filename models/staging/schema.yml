@@ -1,0 +1,154 @@
+version: 2
+
+models:
+
+  - name: stg_local_bike__customers
+    description: "Données clients nettoyées et harmonisées depuis la table source local_bike.customers."
+    columns:
+      - name: customer_id
+        description: "Identifiant unique du client."
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: "Prénom du client."
+      - name: last_name
+        description: "Nom du client."
+      - name: email
+        description: "Adresse e-mail du client."
+      - name: city
+        description: "Ville du client."
+
+  - name: stg_local_bike__orders
+    description: "Commandes client avec informations de date, statut, magasin et vendeur."
+    columns:
+      - name: order_id
+        description: "Identifiant unique de la commande."
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Identifiant du client ayant passé la commande."
+      - name: store_id
+        description: "Identifiant du magasin où la commande a été enregistrée."
+      - name: staff_id
+        description: "Identifiant du vendeur ayant traité la commande."
+      - name: order_date
+        description: "Date de création de la commande."
+      - name: shipped_date
+        description: "Date d’expédition de la commande."
+      - name: order_status
+        description: "Statut de la commande (livrée, en cours, annulée, etc.)."
+
+  - name: stg_local_bike__order_items
+    description: "Articles de chaque commande avec prix, quantité et remises éventuelles."
+    columns:
+      - name: order_id
+        description: "Identifiant de la commande associée."
+        tests:
+          - not_null
+      - name: item_id
+        description: "Identifiant unique de la ligne d’article."
+        tests:
+          - not_null
+      - name: product_id
+        description: "Identifiant du produit commandé."
+      - name: quantity
+        description: "Quantité de ce produit commandée."
+      - name: list_price
+        description: "Prix unitaire du produit."
+      - name: discount
+        description: "Taux de remise appliqué sur cette ligne."
+
+  - name: stg_local_bike__staffs
+    description: "Données sur les employés et vendeurs de Local Bike."
+    columns:
+      - name: staff_id
+        description: "Identifiant unique du membre du personnel."
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: "Prénom de l’employé."
+      - name: last_name
+        description: "Nom de l’employé."
+      - name: email
+        description: "Adresse e-mail professionnelle."
+      - name: store_id
+        description: "Magasin dans lequel travaille l’employé."
+      - name: manager_id
+        description: "Identifiant du manager, s’il existe."
+      - name: active
+        description: "Statut de l’employé (actif/inactif)."
+
+  - name: stg_local_bike__stores
+    description: "Informations sur les magasins Local Bike aux États-Unis."
+    columns:
+      - name: store_id
+        description: "Identifiant unique du magasin."
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: "Nom du magasin."
+      - name: city
+        description: "Ville d’implantation du magasin."
+      - name: state
+        description: "État du magasin."
+      - name: zip_code
+        description: "Code postal du magasin."
+
+  - name: stg_local_bike__products
+    description: "Produits vendus par Local Bike, avec prix, marque et catégorie."
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit."
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Nom du produit."
+      - name: brand_id
+        description: "Identifiant de la marque du produit."
+      - name: category_id
+        description: "Identifiant de la catégorie du produit."
+      - name: model_year
+        description: "Année du modèle."
+      - name: list_price
+        description: "Prix de vente du produit."
+
+  - name: stg_local_bike__categories
+    description: "Catégories de produits (route, VTT, accessoires...)."
+    columns:
+      - name: category_id
+        description: "Identifiant unique de la catégorie."
+        tests:
+          - unique
+          - not_null
+      - name: category_name
+        description: "Nom de la catégorie."
+
+  - name: stg_local_bike__brands
+    description: "Marques partenaires de Local Bike."
+    columns:
+      - name: brand_id
+        description: "Identifiant unique de la marque."
+        tests:
+          - unique
+          - not_null
+      - name: brand_name
+        description: "Nom de la marque."
+
+  - name: stg_local_bike__stocks
+    description: "Niveaux de stock disponibles pour chaque produit dans chaque magasin."
+    columns:
+      - name: store_id
+        description: "Identifiant du magasin."
+        tests:
+          - not_null
+      - name: product_id
+        description: "Identifiant du produit."
+        tests:
+          - not_null
+      - name: quantity
+        description: "Quantité disponible en stock."
