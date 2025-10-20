@@ -1,0 +1,106 @@
+version: 2
+
+models:
+  - name: int_sales_enriched
+    description: "Vue enrichie des ventes incluant les informations client, employé, magasin et produit."
+    columns:
+      - name: order_id
+        description: "Identifiant unique de la commande."
+        tests: [not_null]
+      - name: order_date
+        description: "Date de la commande."
+      - name: required_date
+        description: "Date de livraison souhaitée."
+      - name: shipped_date
+        description: "Date d'expédition de la commande."
+      - name: store_id
+        description: "Identifiant du magasin où la commande a été passée."
+      - name: store_name
+        description: "Nom du magasin."
+      - name: store_city
+        description: "Ville du magasin."
+      - name: store_state
+        description: "État du magasin."
+      - name: staff_id
+        description: "Identifiant du vendeur ou employé ayant géré la commande."
+      - name: staff_name
+        description: "Nom complet de l’employé."
+      - name: customer_id
+        description: "Identifiant unique du client."
+      - name: customer_name
+        description: "Nom complet du client."
+      - name: customer_city
+        description: "Ville du client."
+      - name: customer_state
+        description: "État du client."
+      - name: product_id
+        description: "Identifiant du produit commandé."
+      - name: product_name
+        description: "Nom du produit commandé."
+      - name: list_price
+        description: "Prix unitaire du produit au moment de la commande."
+      - name: quantity
+        description: "Quantité commandée."
+      - name: total_price
+        description: "Montant total de la ligne de commande (prix unitaire * quantité)."
+
+  - name: int_products_enriched
+    description: "Vue enrichie des produits incluant la marque, la catégorie et les stocks disponibles."
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit."
+        tests: [not_null, unique]
+      - name: product_name
+        description: "Nom du produit."
+      - name: brand_name
+        description: "Nom de la marque du produit."
+      - name: category_name
+        description: "Nom de la catégorie du produit."
+      - name: store_id
+        description: "Identifiant du magasin associé au stock."
+      - name: stock_quantity
+        description: "Quantité disponible en stock pour ce produit dans ce magasin."
+      - name: model_year
+        description: "Année du modèle du produit."
+      - name: list_price
+        description: "Prix unitaire du produit."
+
+  - name: int_customers_summary
+    description: "Synthèse des performances clients : nombre d’achats, montant total dépensé, panier moyen."
+    columns:
+      - name: customer_id
+        description: "Identifiant unique du client."
+        tests: [not_null, unique]
+      - name: customer_name
+        description: "Nom complet du client."
+      - name: customer_city
+        description: "Ville du client."
+      - name: customer_state
+        description: "État du client."
+      - name: total_orders
+        description: "Nombre total de commandes passées par le client."
+      - name: total_spent
+        description: "Montant total dépensé par le client."
+      - name: avg_order_value
+        description: "Valeur moyenne des commandes du client."
+
+  - name: int_stores_summary
+    description: "Synthèse des performances magasins : ventes totales, nombre de clients et d’employés associés."
+    columns:
+      - name: store_id
+        description: "Identifiant unique du magasin."
+        tests: [not_null, unique]
+      - name: store_name
+        description: "Nom du magasin."
+      - name: store_city
+        description: "Ville du magasin."
+      - name: store_state
+        description: "État du magasin."
+      - name: total_orders
+        description: "Nombre total de commandes passées dans le magasin."
+      - name: total_revenue
+        description: "Chiffre d’affaires total généré par le magasin."
+      - name: total_staffs
+        description: "Nombre d’employés actifs dans le magasin."
+      - name: total_customers
+        description: "Nombre unique de clients ayant acheté dans le magasin."
