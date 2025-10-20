@@ -1,0 +1,123 @@
+version: 2
+
+models:
+  - name: mart_fct_sales
+    description: >
+      Table de faits principale contenant les transactions détaillées.
+      Chaque ligne correspond à une vente (order_id, product_id, store_id, customer_id).
+      Elle inclut des indicateurs de performance calculés par magasin, produit, client et période.
+    columns:
+      - name: order_id
+        description: Identifiant unique de la commande.
+        tests:
+          - not_null
+      - name: order_date
+        description: Date à laquelle la commande a été effectuée.
+        tests:
+          - not_null
+      - name: customer_id
+        description: Référence du client ayant effectué la commande.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mart_dim_customers')
+              field: customer_id
+      - name: product_id
+        description: Référence du produit vendu.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mart_dim_products')
+              field: product_id
+      - name: store_id
+        description: Identifiant du magasin dans lequel la vente a eu lieu.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mart_dim_stores')
+              field: store_id
+      - name: staff_id
+        description: Identifiant du vendeur ou employé associé à la transaction.
+      - name: quantity
+        description: Quantité de produits vendus lors de cette transaction.
+      - name: list_price
+        description: Prix unitaire catalogue du produit.
+      - name: total_price
+        description: Montant total de la ligne de commande (quantité * prix - remise).
+      - name: year
+        description: Année extraite de la date de commande.
+      - name: month
+        description: Mois extrait de la date de commande.
+      - name: total_revenue_global
+        description: Chiffre d’affaires total toutes ventes confondues.
+      - name: store_revenue
+        description: Chiffre d’affaires total généré par le magasin associé.
+      - name: product_revenue
+        description: Chiffre d’affaires total généré par le produit associé.
+      - name: monthly_revenue
+        description: Chiffre d’affaires agrégé au niveau mensuel.
+      - name: store_orders_count
+        description: Nombre total de commandes enregistrées pour le magasin.
+      - name: avg_line_value_global
+        description: Valeur moyenne d’une ligne de commande sur l’ensemble des ventes.
+      - name: customer_total_spent
+        description: Montant total dépensé par le client sur la période.
+      - name: customer_avg_order_value
+        description: Panier moyen du client (total dépensé / nombre de commandes).
+      - name: customer_total_orders
+        description: Nombre total de commandes passées par le client.
+
+  - name: mart_dim_customers
+    description: >
+      Table de dimension contenant les informations descriptives sur les clients :
+      identité et localisation. Ne contient pas de mesures agrégées.
+    columns:
+      - name: customer_id
+        description: Identifiant unique du client.
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        description: Nom complet du client.
+      - name: customer_city
+        description: Ville du client.
+      - name: customer_state
+        description: État ou région du client.
+
+  - name: mart_dim_products
+    description: >
+      Table de dimension produits contenant les informations descriptives sur les articles :
+      catégorie, modèle, prix catalogue et stock disponible.
+    columns:
+      - name: product_id
+        description: Identifiant unique du produit.
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: Nom du produit.
+      - name: category_name
+        description: Catégorie du produit.
+      - name: model_year
+        description: Année du modèle du produit.
+      - name: list_price
+        description: Prix catalogue du produit.
+      - name: stock_quantity
+        description: Quantité en stock disponible pour ce produit.
+
+  - name: mart_dim_stores
+    description: >
+      Table de dimension magasins décrivant les points de vente physiques :
+      localisation, nom et identifiant. Permet d’analyser les performances par magasin.
+    columns:
+      - name: store_id
+        description: Identifiant unique du magasin.
+        tests:
+          - not_null
+          - unique
+      - name: store_name
+        description: Nom du magasin Local Bike.
+      - name: store_city
+        description: Ville où est implanté le magasin.
+      - name: store_state
+        description: État ou région où est implanté le magasin.
