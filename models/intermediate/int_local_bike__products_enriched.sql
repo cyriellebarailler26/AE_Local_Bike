@@ -16,12 +16,17 @@ select
     p.product_name,
     b.brand_name,
     c.category_name,
-    s.store_id,
-    s.quantity as stock_quantity,
+    SUM(s.quantity) as stock_quantity,
     p.model_year,
     p.list_price
 from products p
 left join brands b on p.brand_id = b.brand_id
 left join categories c on p.category_id = c.category_id
 left join stocks s on p.product_id = s.product_id
-
+GROUP BY 
+    p.product_id,
+    p.product_name,
+    b.brand_name,
+    c.category_name,
+    p.model_year,
+    p.list_price
