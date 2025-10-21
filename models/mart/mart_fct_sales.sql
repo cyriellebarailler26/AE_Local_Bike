@@ -29,7 +29,6 @@ customer_kpis as (
 enriched as (
     select
         s.*,
-        sum(s.total_price) over () as total_revenue_global,
         sum(s.total_price) over (partition by s.store_id) as store_revenue,
         sum(s.total_price) over (partition by s.product_id) as product_revenue,
         sum(s.total_price) over (partition by s.store_id,s.year, s.month) as store_monthly_revenue,
